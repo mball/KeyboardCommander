@@ -1,0 +1,21 @@
+﻿using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KeyboardCommander.Engine.Objects.Animations
+{
+    public class AnimationFrame
+    {
+        public Rectangle SourceRectangle { get; private set; }
+        public int Lifespan { get; private set; }
+
+        public AnimationFrame(Rectangle sourceRectangle, int lifespan)
+        {
+            SourceRectangle = sourceRectangle;
+            Lifespan = lifespan;
+        }
+    }
+}
