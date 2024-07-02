@@ -16,6 +16,16 @@ namespace KeyboardCommander.States
                 commands.Add(new GameplayInputCommand.GameExit());
             }
 
+            if (state.IsKeyDown(Keys.G))
+            {
+                commands.Add(new GameplayInputCommand.KeyOfCPressed());
+            }
+
+            if (state.IsKeyDown(Keys.H))
+            {
+                commands.Add(new GameplayInputCommand.KeyOfDPressed());
+            }
+
             return commands;
         }
     }
