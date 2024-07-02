@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:../../Assets/LeftKeyPressed.png;Sprites/LeftKeyPressed.png
 
+#begin ../../Assets/LeftKeySpriteSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../Assets/LeftKeySpriteSheet.png;Sprites/LeftKeySpriteSheet.png
+
 #begin ../../Assets/NoteA.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -132,4 +144,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:../../Assets/RightKeyPressed.png;Sprites/RightKeyPressed.png
+
+#begin ../../Assets/RightKeySpriteSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../Assets/RightKeySpriteSheet.png;Sprites/RightKeySpriteSheet.png
 
