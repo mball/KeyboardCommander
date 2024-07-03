@@ -1,9 +1,10 @@
 ﻿using System.Numerics;
+using KeyboardCommander.Engine.Objects;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace KeyboardCommander.Engine.Objects
+namespace KeyboardCommander.Objects
 {
-    public class ScoreTextObject : BaseTextObject
+    public class ScoreText : BaseTextObject
     {
         public BigInteger Score
         {
@@ -11,7 +12,7 @@ namespace KeyboardCommander.Engine.Objects
             set => Text = value.ToString();
         }
         
-        public ScoreTextObject(SpriteFont font) : base(font)
+        public ScoreText(SpriteFont font) : base(font)
         {
         }
     }

@@ -29,7 +29,7 @@ namespace KeyboardCommander.States
         private SpriteFont _counterFont;
         private SpriteFont _grandHotelFont;
         
-        private BaseTextObject _scoreTextObject;
+        private ScoreText _scoreTextObject;
         
         private List<KeySprite> _keyList = new List<KeySprite>();
         private List<NoteSprite> _noteList = new List<NoteSprite>();
@@ -64,7 +64,7 @@ namespace KeyboardCommander.States
                 // The text here does not matter, we just need the size of the text
                 var textSize = _counterFont.MeasureString("Version"); 
                 
-                var versionTextObject = new StaticTextObject(_counterFont, $"Keyboard Commander v{version.Major}.{version.Minor}.{version.Build}")
+                var versionTextObject = new StaticText(_counterFont, $"Keyboard Commander v{version.Major}.{version.Minor}.{version.Build}")
                 {
                     Position = new Vector2(5, _viewportHeight - textSize.Y - 5),
                     zIndex = 10000,
@@ -72,7 +72,7 @@ namespace KeyboardCommander.States
                 _uiElements.Add(versionTextObject);
             }
 
-            var scoreLabelObject = new StaticTextObject(_grandHotelFont, "Inspiration:")
+            var scoreLabelObject = new StaticText(_grandHotelFont, "Inspiration:")
             {
                 Position = new Vector2(_viewportWidth / 2, 5),
                 TextAlignment = TextAlignment.Right,
@@ -80,9 +80,9 @@ namespace KeyboardCommander.States
             };
             _uiElements.Add(scoreLabelObject);
             
-            _scoreTextObject = new BaseTextObject(_grandHotelFont)
+            _scoreTextObject = new ScoreText(_grandHotelFont)
             {
-                Text = "0",
+                Score = _playerState.Score,
                 Position = new Vector2(_viewportWidth / 2, 5),
                 TextAlignment = TextAlignment.Left,
                 zIndex = 10000,
@@ -138,7 +138,7 @@ namespace KeyboardCommander.States
                 _noteSprite.MoveUp(gameTime);
             }
             
-            _scoreTextObject.Text = _playerState.Score.ToString();
+            _scoreTextObject.Score = _playerState.Score;
 
             _noteList = CleanObjects(_noteList);
         }
