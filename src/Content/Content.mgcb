@@ -157,3 +157,17 @@
 /processorParam:TextureFormat=Color
 /build:../../Assets/RightKeySpriteSheet.png;Sprites/RightKeySpriteSheet.png
 
+#begin Fonts/Counter.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Counter.spritefont
+
+#begin Fonts/GrandHotel.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/GrandHotel.spritefont
+
