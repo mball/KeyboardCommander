@@ -39,6 +39,7 @@ namespace KeyboardCommander.States
         private List<KeySprite> _keyList = new List<KeySprite>();
         private List<NoteSprite> _noteList = new List<NoteSprite>();
         private List<BaseGameObject> _uiElements = new List<BaseGameObject>();
+        private List<ButtonSprite> _upgradeButtonList = new List<ButtonSprite>();
         
         private PlayerState _playerState = new() { Score = 0 };
 
@@ -46,6 +47,7 @@ namespace KeyboardCommander.States
         {
             var upgradeButton = new ButtonSprite(LoadTexture("Sprites/Containers"));
             AddGameObject(upgradeButton);
+            _upgradeButtonList.Add(upgradeButton);
 
             _panelSprite = new PanelSprite(LoadTexture(PanelTexture));
             AddGameObject(_panelSprite);
@@ -151,7 +153,7 @@ namespace KeyboardCommander.States
             
             _scoreTextObject.Score = _playerState.Score;
 
-            _panelSprite.Update(gameTime);
+            _panelSprite.Update(_upgradeButtonList);
 
             _noteList = CleanObjects(_noteList);
         }

@@ -24,16 +24,40 @@ namespace KeyboardCommander.Objects
             zIndex = 100;
         }
 
-        public void Open()
+        public void Open(List<ButtonSprite> upgradeButtonList)
         {
             if (Position.X > 800)
+            {
                 Position = new Vector2(Position.X - SPEED, Position.Y);
+                foreach (var button in upgradeButtonList)
+                {
+                    button.Position = new Vector2(button.Position.X - SPEED, button.Position.Y);
+                }
+            }
         }
 
-        public void Close()
+        public void Close(List<ButtonSprite> upgradeButtonList)
         {
             if (Position.X < 1255)
+            {
                 Position = new Vector2(Position.X + SPEED, Position.Y);
+                foreach (var button in upgradeButtonList)
+                {
+                    button.Position = new Vector2(button.Position.X + SPEED, button.Position.Y);
+                }
+            }
+        }
+
+        public override void Render(SpriteBatch spriteBatch)
+        {
+            var spacing = 10;
+            foreach (var button in _buttonList)
+            {
+                button.zIndex = zIndex + 1;
+                button.Position = new Vector2(850, spacing);
+            }
+
+            base.Render(spriteBatch);
         }
 
         private bool IsMouseInBounds(MouseState mouseState)
@@ -41,20 +65,15 @@ namespace KeyboardCommander.Objects
             return mouseState.X > Position.X && mouseState.X < Position.X + 50 && mouseState.Y > 310 && mouseState.Y < 405;
         }
 
-        public void Render(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(_texture, Position, Color.White);
-        }
-
-        public void Update(GameTime gameTime)
+        public void Update(List<ButtonSprite> upgradeButtonList)
         {
             if (_open)
             {
-                Open();
+                Open(upgradeButtonList);
             }
             else
             {
-                Close();
+                Close(upgradeButtonList);
             }
 
             var mouseState = Mouse.GetState();
