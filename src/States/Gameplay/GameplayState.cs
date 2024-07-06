@@ -12,6 +12,8 @@ namespace KeyboardCommander.States
 {
     public class GameplayState : BaseGameState
     {
+        private int AutoSaveInterval = 60;
+        
         private const string RightKeyTexture = "Sprites/RightKeySpriteSheet";
         private const string LeftKeyTexture = "Sprites/LeftKeySpriteSheet";
         private const string NoteA = "Sprites/NoteA@2";
@@ -29,13 +31,15 @@ namespace KeyboardCommander.States
         private SpriteFont _counterFont;
         private SpriteFont _grandHotelFont;
         
-        private ScoreText _scoreTextObject;
+        private StaticText _savingTextObject;
+        private BigIntegerText _scoreTextObject;
         
         private List<KeySprite> _keyList = new List<KeySprite>();
         private List<NoteSprite> _noteList = new List<NoteSprite>();
         private List<BaseGameObject> _uiElements = new List<BaseGameObject>();
         
-        private PlayerState _playerState = new() { Score = 0 };
+        private PlayerState _playerState = PlayerState.LoadOrCreate();
+        private TimeSpan _nextAutoSaveTime = TimeSpan.FromSeconds(5);
 
         public override void LoadContent()
         {
@@ -58,12 +62,12 @@ namespace KeyboardCommander.States
             _counterFont = LoadFont(CounterFont);
             _grandHotelFont = LoadFont(GrandHotelFont);
             
+            // The text here does not matter, we just need the size of the text
+            var textSize = _counterFont.MeasureString("Version"); 
+            
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             if (version != null)
             {
-                // The text here does not matter, we just need the size of the text
-                var textSize = _counterFont.MeasureString("Version"); 
-                
                 var versionTextObject = new StaticText(_counterFont, $"Keyboard Commander v{version.Major}.{version.Minor}.{version.Build}")
                 {
                     Position = new Vector2(5, _viewportHeight - textSize.Y - 5),
@@ -71,6 +75,14 @@ namespace KeyboardCommander.States
                 };
                 _uiElements.Add(versionTextObject);
             }
+            
+            _savingTextObject = new StaticText(_counterFont, $"Loading...")
+            {
+                Position = new Vector2(_viewportWidth / 2, _viewportHeight - textSize.Y - 5),
+                TextAlignment = TextAlignment.Center,
+                zIndex = 10000,
+            };
+            _uiElements.Add(_savingTextObject);
 
             var scoreLabelObject = new StaticText(_grandHotelFont, "Inspiration:")
             {
@@ -80,9 +92,9 @@ namespace KeyboardCommander.States
             };
             _uiElements.Add(scoreLabelObject);
             
-            _scoreTextObject = new ScoreText(_grandHotelFont)
+            _scoreTextObject = new BigIntegerText(_grandHotelFont)
             {
-                Score = _playerState.Score,
+                Value = _playerState.Inspiration,
                 Position = new Vector2(_viewportWidth / 2, 5),
                 TextAlignment = TextAlignment.Left,
                 zIndex = 10000,
@@ -109,7 +121,7 @@ namespace KeyboardCommander.States
                     _keyOfCSprite.Pressed();
                     if (cPressed.IsNewPress)
                     {
-                        _playerState.Score += 1;
+                        _playerState.Inspiration += 1;
                         ProduceNote(_keyOfCSprite);
                     }
                 }
@@ -119,7 +131,7 @@ namespace KeyboardCommander.States
                     _keyOfDSprite.Pressed();
                     if (dPressed.IsNewPress)
                     {
-                        _playerState.Score += 1;
+                        _playerState.Inspiration += 1;
                         ProduceNote(_keyOfDSprite);
                     }
                 }
@@ -138,9 +150,35 @@ namespace KeyboardCommander.States
                 _noteSprite.MoveUp(gameTime);
             }
             
-            _scoreTextObject.Score = _playerState.Score;
+            _scoreTextObject.Value = _playerState.Inspiration;
 
             _noteList = CleanObjects(_noteList);
+        }
+
+        public override void SlowUpdate(GameTime gameTime)
+        {
+            if (!_playerState.IsSaving)
+            {
+                _nextAutoSaveTime += gameTime.ElapsedGameTime;
+                
+                var nextSaveTime = AutoSaveInterval - _nextAutoSaveTime.TotalSeconds;
+
+                if (nextSaveTime >= AutoSaveInterval - 5)
+                {
+                    _savingTextObject.Text = "Saved!";
+                }
+                else
+                {
+                    _savingTextObject.Text = $"Saving in {nextSaveTime % 60:00}";
+                }
+                
+                if (nextSaveTime <= 0.1)
+                {
+                    _savingTextObject.Text = "Saving...";
+                    _playerState.Save();
+                    _nextAutoSaveTime = TimeSpan.Zero;
+                }
+            }
         }
 
         private void ProduceNote(KeySprite keySprite)

@@ -1,4 +1,5 @@
-﻿using KeyboardCommander.Engine.States;
+﻿using System;
+using KeyboardCommander.Engine.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,6 +7,8 @@ namespace KeyboardCommander.Engine
 {
     public class MainGame : Game
     {
+        private const int SlowUpdateInterval = 1000;
+        
         private BaseGameState _currentGameState;
 
         private GraphicsDeviceManager _graphics;
@@ -19,6 +22,8 @@ namespace KeyboardCommander.Engine
         private float _DesignedResolutionAspectRatio;
 
         private BaseGameState _FirstGameState;
+        
+        private TimeSpan _lastSlowUpdate = TimeSpan.Zero;
 
         public MainGame(int width, int height, BaseGameState firstGameState)
         {
@@ -158,6 +163,14 @@ namespace KeyboardCommander.Engine
         {
             _currentGameState.HandleInput(gameTime);
             _currentGameState.Update(gameTime);
+            
+            _lastSlowUpdate += gameTime.ElapsedGameTime;
+            
+            if (_lastSlowUpdate.TotalMilliseconds >= SlowUpdateInterval)
+            {
+                _currentGameState.SlowUpdate(new GameTime(gameTime.TotalGameTime, _lastSlowUpdate));;
+                _lastSlowUpdate = TimeSpan.Zero;
+            }
 
             base.Update(gameTime);
         }

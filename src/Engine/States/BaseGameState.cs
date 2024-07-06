@@ -55,6 +55,8 @@ namespace KeyboardCommander.Engine.States
             UpdateGameState(gameTime);
             _soundManager.PlaySoundtrack();
         }
+        
+        public virtual void SlowUpdate(GameTime gameTime) { }
 
         protected Texture2D LoadTexture(string textureName)
         {
