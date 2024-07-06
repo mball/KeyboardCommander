@@ -4,15 +4,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace KeyboardCommander.Objects
 {
-    public class ScoreText : BaseTextObject
+    public class BigIntegerText : BaseTextObject
     {
-        public BigInteger Score
+        public BigInteger Value
         {
             get => BigInteger.Parse(Text);
             set => Text = value.ToString();
         }
         
-        public ScoreText(SpriteFont font) : base(font)
+        public BigIntegerText(SpriteFont font) : base(font)
         {
         }
     }
