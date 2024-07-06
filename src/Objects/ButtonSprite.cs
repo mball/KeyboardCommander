@@ -14,6 +14,8 @@ namespace KeyboardCommander.Objects
         private const int ButtonWidth = 400;
         private const int ButtonHeight = 200;
 
+        private bool _engageable = false;
+
         private Rectangle _sourceRectangle;
 
         public event EventHandler<States.GameplayEvents.ButtonClickedEvent> OnButtonClick;
@@ -50,14 +52,19 @@ namespace KeyboardCommander.Objects
             {
                 if (mouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released)
                 {
-                    _sourceRectangle = new Rectangle(10, 500, CellWidth, CellHeight);
+                    _sourceRectangle = new Rectangle(10, 500, CellWidth, CellHeight); _engageable = true;
                 }
 
-                if (mouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
+                if (mouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed && _engageable)
                 {
                     _sourceRectangle =  new Rectangle(10, 10, CellWidth, CellHeight);
+                    _engageable = false;
                     OnButtonClick?.Invoke(this, new States.GameplayEvents.ButtonClickedEvent());
                 }
+            }
+            else
+            {
+                _sourceRectangle =  new Rectangle(10, 10, CellWidth, CellHeight);
             }
         }
     }
