@@ -20,6 +20,9 @@ namespace KeyboardCommander.States
         private const string CounterFont = "Fonts/Counter";
         private const string GrandHotelFont = "Fonts/GrandHotel";
 
+        private const string PanelTexture = "Sprites/Panel";
+        private const string ContainerSpriteSheet = "Sprites/Containers";
+
         private Texture2D _rightKeyTexture;
         private Texture2D _leftKeyTexture;
         private KeySprite _keyOfCSprite;
@@ -31,6 +34,8 @@ namespace KeyboardCommander.States
         
         private ScoreText _scoreTextObject;
         
+        private PanelSprite _panelSprite;
+
         private List<KeySprite> _keyList = new List<KeySprite>();
         private List<NoteSprite> _noteList = new List<NoteSprite>();
         private List<BaseGameObject> _uiElements = new List<BaseGameObject>();
@@ -39,6 +44,12 @@ namespace KeyboardCommander.States
 
         public override void LoadContent()
         {
+            var upgradeButton = new ButtonSprite(LoadTexture("Sprites/Containers"));
+            AddGameObject(upgradeButton);
+
+            _panelSprite = new PanelSprite(LoadTexture(PanelTexture));
+            AddGameObject(_panelSprite);
+
             _rightKeyTexture = LoadTexture(RightKeyTexture);
             _leftKeyTexture = LoadTexture(LeftKeyTexture);
 
@@ -139,6 +150,8 @@ namespace KeyboardCommander.States
             }
             
             _scoreTextObject.Score = _playerState.Score;
+
+            _panelSprite.Update(gameTime);
 
             _noteList = CleanObjects(_noteList);
         }
