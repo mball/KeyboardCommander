@@ -45,11 +45,60 @@ namespace KeyboardCommander.States
 
         public override void LoadContent()
         {
+            _counterFont = LoadFont(CounterFont);
+            _grandHotelFont = LoadFont(GrandHotelFont);
+
             var upgradeButton = new ButtonSprite(LoadTexture("Sprites/Containers"));
+            upgradeButton.Position = new Vector2(1325, 20);
+            upgradeButton.zIndex = 101;
+            upgradeButton.OnButtonClick += _upgrade_onUpgrade1Click;
+            upgradeButton.Font = _grandHotelFont;
+            upgradeButton.Text = "Upgrade 1";
+
             AddGameObject(upgradeButton);
             _upgradeButtonList.Add(upgradeButton);
 
+            var upgradeButton2 = new ButtonSprite(LoadTexture("Sprites/Containers"));
+            upgradeButton2.Position = new Vector2(1325, 220);
+            upgradeButton2.zIndex = 101;
+            upgradeButton2.OnButtonClick += _upgrade_onUpgrade2Click;
+            upgradeButton2.Font = _grandHotelFont;
+            upgradeButton2.Text = "Upgrade 2";
+            AddGameObject(upgradeButton2);
+            _upgradeButtonList.Add(upgradeButton2);
+
+            var upgradeButton3 = new ButtonSprite(LoadTexture("Sprites/Containers"));
+            upgradeButton3.Position = new Vector2(1325, 420);
+            upgradeButton3.zIndex = 101;
+            AddGameObject(upgradeButton3);
+            _upgradeButtonList.Add(upgradeButton3);
+
+            var upgradeButton4 = new ButtonSprite(LoadTexture("Sprites/Containers"));
+            upgradeButton4.Position = new Vector2(1325, 620);
+            upgradeButton4.zIndex = 101;
+            AddGameObject(upgradeButton4);
+            _upgradeButtonList.Add(upgradeButton4);
+
+            var upgradeButton5 = new ButtonSprite(LoadTexture("Sprites/Containers"));
+            upgradeButton5.Position = new Vector2(1325, 820);
+            upgradeButton5.zIndex = 101;
+            AddGameObject(upgradeButton5);
+            _upgradeButtonList.Add(upgradeButton5);
+
+            var upgradeButton6 = new ButtonSprite(LoadTexture("Sprites/Containers"));
+            upgradeButton6.Position = new Vector2(1325, 1020);
+            upgradeButton6.zIndex = 101;
+            AddGameObject(upgradeButton6);
+            _upgradeButtonList.Add(upgradeButton6);
+
+            var upgradeButton7 = new ButtonSprite(LoadTexture("Sprites/Containers"));
+            upgradeButton7.Position = new Vector2(1325, 1220);
+            upgradeButton7.zIndex = 101;
+            AddGameObject(upgradeButton7);
+            _upgradeButtonList.Add(upgradeButton7);
+
             _panelSprite = new PanelSprite(LoadTexture(PanelTexture));
+//            _panelSprite.SetUpgradeList(ref _upgradeButtonList);
             AddGameObject(_panelSprite);
 
             _rightKeyTexture = LoadTexture(RightKeyTexture);
@@ -67,9 +116,6 @@ namespace KeyboardCommander.States
             {
                 AddGameObject(key);
             }
-            
-            _counterFont = LoadFont(CounterFont);
-            _grandHotelFont = LoadFont(GrandHotelFont);
             
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             if (version != null)
@@ -198,6 +244,16 @@ namespace KeyboardCommander.States
         private List<T> CleanObjects<T>(List<T> objectList) where T : BaseGameObject
         {
             return CleanObjects(objectList, item => item.Position.Y < -200);
+        }
+
+        private void _upgrade_onUpgrade1Click(object sender, GameplayEvents.ButtonClickedEvent e)
+        {
+            _playerState.Score += 10;
+        }
+
+        private void _upgrade_onUpgrade2Click(object sender, GameplayEvents.ButtonClickedEvent e)
+        {
+            _playerState.Score += 10000;
         }
     }
 }

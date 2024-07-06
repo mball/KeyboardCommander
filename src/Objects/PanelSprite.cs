@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KeyboardCommander.Objects
 {
@@ -14,8 +15,8 @@ namespace KeyboardCommander.Objects
         private bool _open = false;
 
         private MouseState _previousMouseState;
-
-        public List<ButtonSprite> _buttonList = new List<ButtonSprite>();
+        
+        public List<ButtonSprite> _upgradeButtonList;
 
         public PanelSprite(Texture2D texture)
         {
@@ -36,6 +37,11 @@ namespace KeyboardCommander.Objects
             }
         }
 
+        public void SetUpgradeList(ref List<ButtonSprite> upgradeButtonList)
+        {
+            _upgradeButtonList = upgradeButtonList;
+        }
+
         public void Close(List<ButtonSprite> upgradeButtonList)
         {
             if (Position.X < 1255)
@@ -46,18 +52,6 @@ namespace KeyboardCommander.Objects
                     button.Position = new Vector2(button.Position.X + SPEED, button.Position.Y);
                 }
             }
-        }
-
-        public override void Render(SpriteBatch spriteBatch)
-        {
-            var spacing = 10;
-            foreach (var button in _buttonList)
-            {
-                button.zIndex = zIndex + 1;
-                button.Position = new Vector2(850, spacing);
-            }
-
-            base.Render(spriteBatch);
         }
 
         private bool IsMouseInBounds(MouseState mouseState)
@@ -85,6 +79,27 @@ namespace KeyboardCommander.Objects
             {
                     _open = false;
             }
+
+            if (mouseState.ScrollWheelValue > _previousMouseState.ScrollWheelValue && upgradeButtonList.First().Position.Y < 10)
+            {
+                foreach (var button in upgradeButtonList)
+                {
+                    button.Position = new Vector2(button.Position.X, button.Position.Y + 40);
+                }
+            }
+            else if (mouseState.ScrollWheelValue < _previousMouseState.ScrollWheelValue && upgradeButtonList.Last().Position.Y > 500)
+            {
+                foreach (var button in upgradeButtonList)
+                {
+                    button.Position = new Vector2(button.Position.X, button.Position.Y - 40);
+                }
+            }
+
+            foreach (var upgradeButton in upgradeButtonList)
+            {
+                upgradeButton.IsClicked(mouseState, _previousMouseState);
+            }
+
             _previousMouseState = mouseState;
         }
     }
